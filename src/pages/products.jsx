@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Elements/Button";
 import CardProduct from "../components/Fragments/CardProduct";
 
@@ -56,6 +56,11 @@ const dataProducts = [
 export default function ProductsPage() {
   const user = JSON.parse(localStorage.getItem("user"));
   const [cart, setCart] = useState([]);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    setTotal(cart.reduce((total, item) => total + item.price * item.qty, 0));
+  }, [cart]);
 
   if (!user) {
     window.location.href = "/login";
@@ -98,7 +103,7 @@ export default function ProductsPage() {
         </div>
       )}
       <div className="flex justify-center w-full px-10 py-8">
-        <div className="flex flex-wrap w-8/12">
+        <div className="flex flex-wrap w-7/12">
           {dataProducts.map((product) => (
             <CardProduct key={product.id}>
               <CardProduct.Header image={product.image} />
@@ -109,7 +114,7 @@ export default function ProductsPage() {
             </CardProduct>
           ))}
         </div>
-        <div className="w-4/12 p-5">
+        <div className="w-5/12 p-5">
           {cart.length !== 0 ? (
             <div className="h-[500px] overflow-y-auto">
               <p className="text-blue-400 font-bold text-4xl mb-5">Cart</p>
@@ -127,7 +132,10 @@ export default function ProductsPage() {
                       Price
                     </th>
                     <th className="px-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      QTY
+                      QTY Order
+                    </th>
+                    <th className="px-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Total Price
                     </th>
                     <th className="px-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Action
@@ -144,7 +152,7 @@ export default function ProductsPage() {
                         {item.title}
                       </td>
                       <td className="px-2 text-center py-4 whitespace-nowrap">
-                        {(item.qty * item.price).toLocaleString("id-ID", {
+                        {item.price.toLocaleString("id-ID", {
                           style: "currency",
                           currency: "IDR",
                           minimumFractionDigits: 0,
@@ -152,6 +160,13 @@ export default function ProductsPage() {
                       </td>
                       <td className="px-2 text-center whitespace-nowrap">
                         {item.qty}
+                      </td>
+                      <td className="px-2 text-center whitespace-nowrap">
+                        {(item.qty * item.price).toLocaleString("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          minimumFractionDigits: 0,
+                        })}
                       </td>
                       <td className="px-2 text-center py-4 whitespace-nowrap">
                         <Button
@@ -165,6 +180,16 @@ export default function ProductsPage() {
                   ))}
                 </tbody>
               </table>
+              <div className="mt-1 sticky bottom-0 bg-blue-400 p-3 text-white">
+                <p>Total Price :</p>
+                <p className="font-bold text-lg">
+                  {total.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  })}
+                </p>
+              </div>
             </div>
           ) : (
             <p className="text-blue-400 font-bold text-4xl mb-5">Cart Empty</p>

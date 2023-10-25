@@ -52,7 +52,7 @@ CardProduct.Footer = Footer;
 export default function CardProduct(props) {
   const { children } = props;
   return (
-    <div className="bg-gray-700 w-[30%] max-w-sm shadow-md h-auto rounded-2xl mx-4 mb-10">
+    <div className="bg-gray-700 w-[30%] max-w-sm shadow-md h-auto rounded-2xl mx-2 mb-10">
       {children}
     </div>
   );
