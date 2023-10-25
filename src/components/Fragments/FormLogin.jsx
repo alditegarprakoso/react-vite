@@ -1,20 +1,26 @@
+import { useEffect, useRef } from "react";
 import Button from "../Elements/Button";
 import InputForm from "../Elements/Input";
 
 export default function FormLogin() {
-  
   function handleLogin(event) {
     event.preventDefault();
 
     const data = {
       email: event.target.email.value,
       password: event.target.password.value,
-    }
+    };
 
     localStorage.setItem("user", JSON.stringify(data));
 
     window.location.href = "/products";
   }
+
+  const emailRef = useRef(null);
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
 
   return (
     <form onSubmit={handleLogin}>
@@ -25,6 +31,7 @@ export default function FormLogin() {
           label="Email"
           placeholder="example@mail.com"
           required="required"
+          ref={emailRef}
         />
       </div>
       <div className="mb-6">
@@ -36,7 +43,9 @@ export default function FormLogin() {
           required="required"
         />
       </div>
-      <Button color="bg-blue-400 w-full" type="submit">Login</Button>
+      <Button color="bg-blue-400 w-full" type="submit">
+        Login
+      </Button>
     </form>
   );
 }

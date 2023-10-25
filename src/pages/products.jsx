@@ -180,16 +180,18 @@ export default function ProductsPage() {
                   ))}
                 </tbody>
               </table>
-              <div className="mt-1 sticky bottom-0 bg-blue-400 p-3 text-white">
-                <p>Total Price :</p>
-                <p className="font-bold text-lg">
-                  {total.toLocaleString("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                    minimumFractionDigits: 0,
-                  })}
-                </p>
-              </div>
+              {total > 0 && (
+                <div className="mt-1 sticky bottom-0 bg-blue-400 p-3 text-white">
+                  <p>Total Price :</p>
+                  <p className="font-bold text-lg">
+                    {total.toLocaleString("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      minimumFractionDigits: 0,
+                    })}
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             <p className="text-blue-400 font-bold text-4xl mb-5">Cart Empty</p>
