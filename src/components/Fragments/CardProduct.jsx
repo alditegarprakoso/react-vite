@@ -18,14 +18,14 @@ function Header(props) {
 function Body(props) {
     const { children, title, price } = props;
   return (
-    <div className="text-white font-semibold p-5">
-      <a href="#">
+    <div className="text-white font-semibold pt-5 pb-20 px-5">
+      <div>
         <h5 className="text-xl tracking-tight">{title}</h5>
         <p className="text-sm mt-1 mb-4">{price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0})}</p>
-        <p className="font-normal text-justify text-slate-200">
-          {children}
+        <p className="text-sm text-slate-200">
+          {`${children.slice(0, 50)}...`}
         </p>
-      </a>
+      </div>
     </div>
   );
 }
@@ -33,7 +33,7 @@ function Body(props) {
 function Footer(props) {
   const { isClick, product } = props;
   return (
-    <div className="flex items-center justify-center w-full rounded-b-2xl">
+    <div className="flex items-center justify-center w-full rounded-b-2xl absolute bottom-0">
       <Button
         color="bg-blue-400"
         customClass="w-full rounded-t-none rounded-b-2xl"
@@ -52,7 +52,7 @@ CardProduct.Footer = Footer;
 export default function CardProduct(props) {
   const { children } = props;
   return (
-    <div className="bg-gray-700 w-[30%] max-w-sm shadow-md h-auto rounded-2xl mx-2 mb-10">
+    <div className="bg-gray-700 w-[30%] max-w-sm shadow-md h-auto rounded-2xl mx-2 mb-10 relative">
       {children}
     </div>
   );
