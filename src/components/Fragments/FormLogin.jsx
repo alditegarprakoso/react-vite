@@ -1,37 +1,56 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../Elements/Button";
 import InputForm from "../Elements/Input";
+import { login } from "../../services/auth.service";
+import Spinner from "../Elements/Spinner";
+import Modal from "../Elements/Modal";
 
 export default function FormLogin() {
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   function handleLogin(event) {
     event.preventDefault();
 
+    setLoading(true);
     const data = {
-      email: event.target.email.value,
+      username: event.target.username.value,
       password: event.target.password.value,
     };
 
-    localStorage.setItem("user", JSON.stringify(data));
-
-    window.location.href = "/products";
+    login(data, (status, res) => {
+      if (status) {
+        localStorage.setItem("user", JSON.stringify(res));
+        setLoading(false);
+        window.location.href = "/products";
+      } else {
+        setError(res.response.data);
+        setLoading(false);
+      }
+    });
   }
 
-  const emailRef = useRef(null);
+  const usernameRef = useRef(null);
 
   useEffect(() => {
-    emailRef.current.focus();
+    usernameRef.current.focus();
   }, []);
 
   return (
     <form onSubmit={handleLogin}>
+      {loading && (
+        <Modal>
+          <Spinner />
+        </Modal>
+      )}
       <div className="mb-6">
         <InputForm
-          type="email"
-          name="email"
-          label="Email"
-          placeholder="example@mail.com"
+          type="text"
+          name="username"
+          label="username"
+          placeholder="Jhon Doe"
           required="required"
-          ref={emailRef}
+          ref={usernameRef}
         />
       </div>
       <div className="mb-6">
@@ -43,6 +62,7 @@ export default function FormLogin() {
           required="required"
         />
       </div>
+      {error && <p className="mb-6 text-red-500">{error}</p>}
       <Button color="bg-blue-400 w-full" type="submit">
         Login
       </Button>

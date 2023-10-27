@@ -2,22 +2,28 @@ import { useEffect, useState } from "react";
 import Button from "../components/Elements/Button";
 import CardProduct from "../components/Fragments/CardProduct";
 import { getProducts } from "../services/product.service";
+import { getUsername } from "../services/auth.service";
 
 export default function ProductsPage() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const token = JSON.parse(localStorage.getItem("user"));
   const [dataProducts, setDataProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
+  const [user, setUser] = useState("");
+
+  if (!token) {
+    window.location.href = "/login";
+  }
 
   useEffect(() => {
-    if (!user) {
-      window.location.href = "/login";
-    } else {
-      getProducts((data) => {
-        setDataProducts(data);
-      });
-    }
-  });
+    getProducts((data) => {
+      setDataProducts(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    setUser(getUsername(token.token));
+  }, []);
 
   useEffect(() => {
     setTotal(cart.reduce((total, item) => total + item.price * item.qty, 0));
@@ -50,9 +56,7 @@ export default function ProductsPage() {
     <div className="flex flex-col justify-center items-center min-h-screen overflow-x-hidden">
       {user && (
         <div className="flex justify-end items-center w-full h-16 px-5 mb-5 bg-blue-400 sticky top-0">
-          <p className="text-white font-bold -tracking-tighter mr-5">
-            {user.email}
-          </p>
+          <p className="text-white font-bold -tracking-tighter mr-5">{user}</p>
           <Button customClass="bg-slate-700" onClick={handleLogout}>
             Logout
           </Button>
@@ -109,7 +113,7 @@ export default function ProductsPage() {
                           {index + 1}
                         </td>
                         <td className="px-2 text-center py-4 whitespace-nowrap">
-                          {item.title.slice(0, 15) + '...'}
+                          {item.title.slice(0, 15) + "..."}
                         </td>
                         <td className="px-2 text-center py-4 whitespace-nowrap">
                           {item.price.toLocaleString("id-ID", {
