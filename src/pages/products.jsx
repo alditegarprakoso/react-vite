@@ -5,15 +5,10 @@ import { getProducts } from "../services/product.service";
 import { getUsername } from "../services/auth.service";
 
 export default function ProductsPage() {
-  const token = JSON.parse(localStorage.getItem("user"));
   const [dataProducts, setDataProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
-  const [user, setUser] = useState("");
-
-  if (!token) {
-    window.location.href = "/login";
-  }
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     getProducts((data) => {
@@ -22,8 +17,15 @@ export default function ProductsPage() {
   }, []);
 
   useEffect(() => {
-    setUser(getUsername(token.token));
-  }, []);
+    const token = JSON.parse(localStorage.getItem("user"));
+    if (!token) {
+      window.location.href = "/login";
+    }
+
+    if (!user) {
+      setUser(getUsername(token.token));
+    }
+  }, [user]);
 
   useEffect(() => {
     setTotal(cart.reduce((total, item) => total + item.price * item.qty, 0));
