@@ -1,16 +1,17 @@
+import { Link } from "react-router-dom";
 import Button from "../Elements/Button";
 
 function Header(props) {
-    const { image } = props;
+    const { image, id } = props;
   return (
     <div>
-      <a href="#">
+      <Link to={`/product/${id}/detail`}>
         <img
           src={image}
           alt="product"
           className="object-cover h-[300px] w-full rounded-t-xl"
         />
-      </a>
+      </Link>
     </div>
   );
 }

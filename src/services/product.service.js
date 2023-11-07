@@ -9,16 +9,11 @@ export const getProducts = async (callback) => {
   }
 };
 
-export const getProducts2 = async (callback) => {
-  const controller = new AbortController();
-
-  axios
-    .get("https://fakestoreapi.com/products", {
-      signal: controller.signal,
-    })
-    .then(function (response) {
-      callback(response.data);
-    });
-
-  controller.abort();
+export const getDetailProduct = async (id, callback) => {
+  try {
+    const { data } = await axios.get(`https://fakestoreapi.com/products/${id}`);
+    callback(data);
+  } catch (error) {
+    console.log(error);
+  }
 };
