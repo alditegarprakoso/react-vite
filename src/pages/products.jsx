@@ -2,30 +2,19 @@ import { useEffect, useState } from "react";
 import Button from "../components/Elements/Button";
 import CardProduct from "../components/Fragments/CardProduct";
 import { getProducts } from "../services/product.service";
-import { getUsername } from "../services/auth.service";
+import { useLogin } from "../hooks/useLogin";
 
 export default function ProductsPage() {
   const [dataProducts, setDataProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
-  const [user, setUser] = useState(null);
+  const username = useLogin()
 
   useEffect(() => {
     getProducts((data) => {
       setDataProducts(data);
     });
   }, []);
-
-  useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("user"));
-    if (!token) {
-      window.location.href = "/login";
-    }
-
-    if (!user) {
-      setUser(getUsername(token.token));
-    }
-  }, [user]);
 
   useEffect(() => {
     setTotal(cart.reduce((total, item) => total + item.price * item.qty, 0));
@@ -56,9 +45,9 @@ export default function ProductsPage() {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen overflow-x-hidden">
-      {user && (
+      {username && (
         <div className="flex justify-end items-center w-full h-16 px-5 mb-5 bg-blue-400 sticky top-0">
-          <p className="text-white font-bold -tracking-tighter mr-5">{user}</p>
+          <p className="text-white font-bold -tracking-tighter mr-5">{username}</p>
           <Button customClass="bg-slate-700" onClick={handleLogout}>
             Logout
           </Button>
