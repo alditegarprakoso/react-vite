@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from "../Elements/Button";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/slices/cartSlice";
 
 function Header(props) {
     const { image, id } = props;
@@ -32,13 +34,14 @@ function Body(props) {
 }
 
 function Footer(props) {
-  const { isClick, product } = props;
+  const { product } = props;
+  const dispatch = useDispatch();
   return (
     <div className="flex items-center justify-center w-full rounded-b-2xl absolute bottom-0">
       <Button
         color="bg-blue-400"
         customClass="w-full rounded-t-none rounded-b-2xl"
-        onClick={() => isClick (product)}
+        onClick={() => dispatch(addToCart(product))}
       >
         Add to cart
       </Button>
