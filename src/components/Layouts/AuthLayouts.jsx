@@ -6,6 +6,7 @@ import { useEffect } from "react";
 function BottomSection(props) {
   const { type } = props;
   return (
+    <>
     <p className="text-center mt-5 text-slate-500">
       {type === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
       {type === "login" && (
@@ -19,6 +20,8 @@ function BottomSection(props) {
         </Link>
       )}
     </p>
+    <p className="text-center text-blue-400 mt-2">Account Demo : johnd, m38rmF$</p>
+    </>
   );
 }
 

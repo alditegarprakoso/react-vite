@@ -68,7 +68,6 @@ export default function FormLogin() {
       <Button color="bg-blue-400 w-full" type="submit">
         Login
       </Button>
-      <p>Account Demo : johnd, m38rmF$</p>
     </form>
   );
 }
