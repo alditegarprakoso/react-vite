@@ -28,7 +28,7 @@ export default function ProductsPage() {
           <Spinner />
         </Modal>
       ) : (
-        <div className="flex flex-col justify-center items-center min-h-screen overflow-x-hidden">
+        <div className="flex flex-col justify-center items-center min-h-screen overflow-x-hidden dark:bg-slate-600">
           <NavbarLayout />
           {dataProducts.length > 0 && (
             <div className="flex justify-center w-full px-10 py-8">

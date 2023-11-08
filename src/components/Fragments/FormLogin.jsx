@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../Elements/Button";
 import InputForm from "../Elements/Input";
 import { login } from "../../services/auth.service";
@@ -8,6 +9,7 @@ import Modal from "../Elements/Modal";
 export default function FormLogin() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function handleLogin(event) {
     event.preventDefault();
@@ -22,7 +24,7 @@ export default function FormLogin() {
       if (status) {
         localStorage.setItem("user", JSON.stringify(res));
         setLoading(false);
-        window.location.href = "/products";
+        navigate("/products")
       } else {
         setError(res.response.data);
         setLoading(false);
